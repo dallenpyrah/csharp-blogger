@@ -19,10 +19,13 @@ namespace blogger.Controllers
         private readonly ProfilesService _pservice;
         private readonly BlogsService _blogservice;
 
-        public AccountController(ProfilesService pservice, BlogsService blogservice)
+        private readonly CommentsService _cservice;
+
+        public AccountController(ProfilesService pservice, BlogsService blogservice, CommentsService cservice)
         {
             _pservice = pservice;
             _blogservice = blogservice;
+            _cservice = cservice;
         }
 
         [HttpGet]
@@ -51,6 +54,35 @@ namespace blogger.Controllers
             {
                 Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
                 return Ok(_blogservice.GetBlogsByProfileId(userInfo.Id));
+            }
+            catch (System.Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpGet("comments")]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        {
+            try
+            {
+                Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                return Ok(_cservice.GetCommentsByProfileId(userInfo.Id));
+            }
+            catch (System.Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Comment>> EditAccount([FromBody] Profile newProfile)
+        {
+            try
+            {
+                Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+                newProfile.Id = userInfo.Id;
+                return Ok(_pservice.EditAccount(newProfile));
             }
             catch (System.Exception err)
             {

@@ -12,11 +12,14 @@ namespace blogger.Controllers
     private readonly ProfilesService _pservice;
     private readonly BlogsService _blogservice;
 
-    public ProfilesController(ProfilesService pservice, BlogsService blogservice)
-    {
-      _pservice = pservice;
-      _blogservice = blogservice;
-    }
+    private readonly CommentsService _cservice;
+
+        public ProfilesController(ProfilesService pservice, BlogsService blogservice, CommentsService cservice)
+        {
+            _pservice = pservice;
+            _blogservice = blogservice;
+            _cservice = cservice;
+        }
 
     [HttpGet("{id}")]
     public ActionResult<Profile> Get(string id)
@@ -42,6 +45,18 @@ namespace blogger.Controllers
       catch (System.Exception err)
       {
         return BadRequest(err.Message);
+      }
+    }
+
+    [HttpGet("{id}/comments")]
+    public ActionResult<IEnumerable<Comment>> GetComments(string id){
+      try
+      {
+          return Ok(_cservice.GetCommentsByProfileId(id));
+      }
+      catch (System.Exception err)
+      {
+          return BadRequest(err.Message);
       }
     }
   }
