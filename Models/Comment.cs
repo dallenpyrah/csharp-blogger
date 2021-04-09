@@ -11,5 +11,7 @@ namespace blogger.Models
         public string Body { get; set; }
         [Required]
         public int BlogId { get; set; }
+
+        public Profile Creator { get; set; }
     }
 }
