@@ -44,5 +44,15 @@ namespace blogger.Services
             string deleted = "Comment Deleted";
             return deleted;
         }
+
+        internal IEnumerable<Comment> GetCommentsByBlogId(int id)
+        {
+            return _repo.GetCommentsByBlogId(id);
+        }
+
+        internal IEnumerable<Comment> GetCommentsByProfileId(string id)
+        {
+            return _repo.GetCommentsByProfileId(id);
+        }
     }
 }

@@ -60,6 +60,35 @@ namespace blogger.Repository
             }, new { id }, splitOn: "id").FirstOrDefault();
         }
 
+        internal IEnumerable<Comment> GetCommentsByProfileId(string id)
+        {
+            string sql = @"SELECT
+            c.*,
+            p.*
+            FROM thecomments c
+            JOIN profiles p ON c.creatorId = p.id
+            WHERE c.creatorId = @id;";
+            return _db.Query<Comment,Profile,Comment>(sql, (comment, profile) => {
+                comment.Creator = profile;
+                return comment;
+            }, new { id }, splitOn : "id");
+        }
+
+        internal IEnumerable<Comment> GetCommentsByBlogId(int id)
+        {
+            string sql = @"SELECT
+            c.*,
+            p.*
+            FROM thecomments c
+            JOIN profiles p ON c.creatorId = p.id
+            WHERE c.blogId = @id;";
+            return _db.Query<Comment, Profile, Comment>(sql, (comment, profile) =>
+            {
+                comment.Creator = profile;
+                return comment;
+            }, new { id }, splitOn : "id");
+        }
+
         internal Comment EditComment(Comment original)
         {
             string sql = @"UPDATE thecomments

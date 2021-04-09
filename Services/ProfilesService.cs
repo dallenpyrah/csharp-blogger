@@ -31,5 +31,16 @@ namespace blogger.Services
       return profile;
     }
 
-  }
+        internal Profile EditAccount(Profile newProfile)
+        {
+            Profile account = GetProfileById(newProfile.Id);
+            if(account == null){
+              throw new SystemException("INVALID ID");
+            }else{
+              account.Name = newProfile.Name != null ? newProfile.Name : account.Name;
+              account.Picture = newProfile.Picture != null ? newProfile.Picture : account.Picture;
+              return _repo.Edit(account);
+            }
+        }
+    }
 }

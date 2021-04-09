@@ -15,10 +15,12 @@ namespace blogger.Controllers
     {
 
         private readonly BlogsService _service;
+        private readonly CommentsService _cservice;
 
-        public BlogsController(BlogsService service)
+        public BlogsController(BlogsService service, CommentsService cservice)
         {
             _service = service;
+            _cservice = cservice;
         }
 
         [HttpGet]
@@ -27,6 +29,19 @@ namespace blogger.Controllers
             try
             {
                 return Ok(_service.GetAll());
+            }
+            catch (System.Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
+        [HttpGet("{id}/comments")]
+        public ActionResult<IEnumerable<Comment>> GetCommentsByBlogId(int id)
+        {
+            try
+            {
+                return Ok(_cservice.GetCommentsByBlogId(id));
             }
             catch (System.Exception err)
             {
