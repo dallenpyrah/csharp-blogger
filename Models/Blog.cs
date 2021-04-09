@@ -9,8 +9,10 @@ namespace blogger.Models
         [MaxLength(20)]
         public string Title { get; set; }
         public string Body { get; set; }
-        public string imgUrl { get; set; }
-        public bool published { get; set; }
+        public string ImgUrl { get; set; }
+        public bool Published { get; set; }
         public string CreatorId { get; set; }
+
+        public Profile Creator { get; set; }
     }
 }
