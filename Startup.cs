@@ -48,19 +48,19 @@ namespace blogger
        });
 
             services.AddCors(options =>
-             {
-                 options.AddPolicy("CorsDevPolicy", builder =>
+         {
+             options.AddPolicy("CorsDevPolicy", builder =>
                 {
-                    builder
-                         .WithOrigins(new string[]{
+                   builder
+                            .WithOrigins(new string[]{
                             "http://localhost:8080",
                             "http://localhost:8081"
-                            })
-                         .AllowAnyMethod()
-                         .AllowAnyHeader()
-                         .AllowCredentials();
-                });
-             });
+                           })
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+               });
+         });
 
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
             services.AddTransient<ProfilesService>();
@@ -89,6 +89,8 @@ namespace blogger
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsDevPolicy");
 
             app.UseRouting();
 
